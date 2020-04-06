@@ -54,8 +54,19 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
-
+        # check if storage is full
+        if len(self.storage) >= self.capacity:
+            self.resize()
+        # get the location of the hashed key
+        key_location = self._hash_mod(key)
+        # check if the location is populated
+        if self.storage[key_location]:
+            return -1
+        # create the LL pair to add to the list
+        else:
+            ll_temp = LinkedPair(key, value)
+            # add the key and value to that location
+            self.storage[key_location] = ll_temp
 
 
     def remove(self, key):
@@ -66,7 +77,15 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        # get location of key
+        key_location = self._hash_mod(key)
+        # check to see if location is populated
+        if self.storage[key_location]:
+            # remove the LL pair
+            self.storage[key_location] = None
+        # else print warning
+        else:
+            return -1
 
 
     def retrieve(self, key):
@@ -77,7 +96,14 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        # get key location
+        key_location = self._hash_mod(key)
+        # check if location is populated
+        if self.storage[key_location]:
+            return self.storage[key_location].value
+            
+        else:
+            return None
 
 
     def resize(self):
@@ -87,9 +113,15 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
-
-
+        # double capacity
+        self.capacity *= 2
+        # make temp for new storage
+        temp_storage = [None] * self.capacity
+        # move old values to temp storage
+        for i in range(len(self.storage)):
+            temp_storage[i] = self.storage[i]
+        # set self.storage to temp storage
+        self.storage = temp_storage
 
 if __name__ == "__main__":
     ht = HashTable(2)
